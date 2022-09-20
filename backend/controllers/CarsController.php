@@ -24,6 +24,7 @@ class CarsController extends Controller
                         'allow' => true,
                         'matchCallback' => function ($rule, $action) {
                             $Token = Yii::$app->request->headers->get('Token');
+                            // if ($Token != null)
                             if ($Token == null)
                                 return true;
 
@@ -34,18 +35,14 @@ class CarsController extends Controller
             ],
         ];
     }
-    public function actionSpecialCallback()
-    {
-        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        return [];
-    }
-    public function actionIndex($prop = null, $val = null)
+
+    public function actionIndex($prop = null, $val = null, $page = 1, $limit = 10)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (is_null($prop) || is_null($val))
-            $model = Car::find()->joinWith(['car_vendor_name', 'car_model_name', 'car_engine_name', 'car_transmission_name'])->asArray()->all();
+            $model = Car::find()->limit($limit)->offset(($page-1)*$limit)->joinWith(['car_vendor_name', 'car_model_name', 'car_engine_name', 'car_transmission_name'])->asArray()->all();
         else
-            $model = Car::find()->where(['car_'.$prop.'_id' => $val])->joinWith(['car_vendor_name', 'car_model_name', 'car_engine_name', 'car_transmission_name'])->asArray()->all();
+            $model = Car::find()->where(['car_'.$prop.'_id' => $val])->limit($limit)->offset(($page-1)*$limit)->joinWith(['car_vendor_name', 'car_model_name', 'car_engine_name', 'car_transmission_name'])->asArray()->all();
 
         $result = [];
         foreach($model as &$m){

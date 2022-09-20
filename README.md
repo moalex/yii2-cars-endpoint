@@ -2,7 +2,7 @@ yii2-cars-endpoint
 ==================
 
 ```bash
-curl -s "http://localhost/cars/index.php?r=cars"
+curl -s "http://localhost/cars/index.php?r=cars&page=1"
 curl -s "http://localhost/cars/index.php?r=cars&prop=vendor&val=1"
 ```
 
